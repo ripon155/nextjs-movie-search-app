@@ -1,17 +1,12 @@
-// import Image from "next/image";
-
 import Resultes from "@/components/Resultes";
 
-const API_KEY = process.env.API_KEY;
 const TOKEN = process.env.TOKEN;
 
-export default async function Home({ searchParams }) {
-  const genre = searchParams.genre || "fetchTrending";
+async function page({ params }) {
+  const searchTerm = params.searchTerm;
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/${
-      genre === "fetchTopRated" ? "movie/top_rated" : "trending/movie/week"
-    }?language=en-US&page=1`,
+    `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US&page=1'`,
     {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
@@ -24,13 +19,17 @@ export default async function Home({ searchParams }) {
   if (!response.ok) {
     throw new Error("faild to fetch data");
   }
-
   const data = await response.json();
   const results = data.results;
-  // console.log(results);
+
   return (
     <div>
-      <Resultes results={results} />
+      {results && results.length === 0 && (
+        <h1 className="text-center pt-6">Now results found</h1>
+      )}
+      {results && <Resultes results={results} />}
     </div>
   );
 }
+
+export default page;

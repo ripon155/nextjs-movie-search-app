@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import Providers from "./Providers";
 import Navbar from "@/components/Navbar";
 
+import SearchPage from "@/components/SearchPage";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -18,6 +20,8 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header />
           <Navbar />
+
+          <SearchPage />
           {children}
         </Providers>
       </body>
